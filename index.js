@@ -94,6 +94,76 @@ function receiveDataAction (todos, goals) {
   }
 }
 
+function handleAddTodo (name, callback) {
+  return (dispatch) => {
+    return API.saveTodo(name)
+      .then((todo) => {
+        dispatch(addTodoAction(todo))
+        callback()
+      })
+      .catch(() => {
+        alert('There was an error. Try again.')
+      })
+  }
+}
+
+function handleToggleTodo (id) {
+  return (dispatch) => {
+    dispatch(toggleTodoAction(id))
+    return API.saveTodoToggle(id)
+      .catch(() => {
+        dispatch(toggleTodoAction(id))
+        alert('An error occurred. Try again.')
+      })
+  }
+}
+
+function handleDeleteTodo (todo) {
+  return (dispatch) => {
+    dispatch(removeTodoAction(todo.id))
+    return API.deleteTodo(todo.id)
+      .catch(() => {
+        dispatch(addTodoAction(todo))
+        alert('An error occurred. Try again.')
+      })
+  }
+}
+
+function handleAddGoal (name, callback) {
+  return (dispatch) => {
+    return API.saveGoal(name)
+      .then((goal) => {
+        dispatch(addGoalAction(goal))
+        callback()
+      })
+      .catch(() => {
+        alert('There was an error. Try again.')
+      })
+  }
+}
+
+function handleDeleteGoal (goal) {
+  return (dispatch) => {
+    dispatch(removeGoalAction(goal.id))
+    return API.deleteGoal(goal.id)
+      .catch(() => {
+        dispatch(addGoalAction(goal))
+        alert('An error occurred. Try again.')
+      })
+  }
+}
+
+function handleInitialData () {
+  return (dispatch) => {
+    Promise.all([
+      API.fetchTodos(),
+      API.fetchGoals()
+    ]).then(([ todos, goals ]) => {
+      dispatch(receiveDataAction(todos, goals))
+    })
+  }
+}
+
 // Day to day items
 function todos (state = [], action) {
   switch(action.type) {
@@ -194,7 +264,7 @@ const store = Redux.createStore(Redux.combineReducers({
   todos,
   goals,
   loading
-}), Redux.applyMiddleware(checker, logger)) // Tell Redux about our Middleware
+}), Redux.applyMiddleware(ReduxThunk.default, checker, logger)) // Tell Redux about our Middleware
 
 // Unnecessary Code after refactoring with React
 // store.subscribe(() => {
