@@ -48,6 +48,7 @@ const REMOVE_TODO = 'REMOVE_TODO'
 const TOGGLE_TODO = 'TOGGLE_TODO'
 const ADD_GOAL = 'ADD_GOAL'
 const REMOVE_GOAL = 'REMOVE_GOAL'
+const RECEIVE_DATA = 'RECEIVE_DATA'
 
 // Action Creators (creating an action)
 function addTodoAction (todo) {
@@ -85,6 +86,14 @@ function removeGoalAction (id) {
   }
 }
 
+function receiveDataAction (todos, goals) {
+  return {
+    type: RECEIVE_DATA,
+    todos,
+    goals
+  }
+}
+
 // Day to day items
 function todos (state = [], action) {
   switch(action.type) {
@@ -96,6 +105,8 @@ function todos (state = [], action) {
       return state.map((todo) => todo.id !== action.id ? todo : 
         Object.assign({}, todo, { complete: !todo.complete})
       )
+    case RECEIVE_DATA : 
+      return action.todos
     default : 
       return state
   }
@@ -108,7 +119,19 @@ function goals (state = [], action) {
       return state.concat([action.goal])
     case REMOVE_GOAL :
       return state.filter((goal) => goal.id !== action.id)
+    case RECEIVE_DATA : 
+      return action.goals
     default :
+      return state
+  }
+}
+
+// Loading Spinner
+function loading (state = true, action) {
+  switch(action.type) {
+    case RECEIVE_DATA : 
+      return false
+    default : 
       return state
   }
 }
@@ -169,7 +192,8 @@ const logger = (store) => (next) => (action) => {
 // Test code for the console
 const store = Redux.createStore(Redux.combineReducers({
   todos,
-  goals
+  goals,
+  loading
 }), Redux.applyMiddleware(checker, logger)) // Tell Redux about our Middleware
 
 // Unnecessary Code after refactoring with React
