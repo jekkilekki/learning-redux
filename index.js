@@ -172,94 +172,95 @@ const store = Redux.createStore(Redux.combineReducers({
   goals
 }), Redux.applyMiddleware(checker, logger)) // Tell Redux about our Middleware
 
-store.subscribe(() => {
-  const { todos, goals } = store.getState()
+// Unnecessary Code after refactoring with React
+// store.subscribe(() => {
+//   const { todos, goals } = store.getState()
 
-  // When store changes, reset the lists completely to not duplicate previously added list items
-  document.getElementById('todos').innerHTML = ''
-  document.getElementById('goals').innerHTML = ''
+//   // When store changes, reset the lists completely to not duplicate previously added list items
+//   document.getElementById('todos').innerHTML = ''
+//   document.getElementById('goals').innerHTML = ''
 
-  todos.forEach(addTodoToDOM)
-  goals.forEach(addGoalToDOM)
+//   todos.forEach(addTodoToDOM)
+//   goals.forEach(addGoalToDOM)
   
-  console.log('The new state is: ', store.getState())
-})
+//   console.log('The new state is: ', store.getState())
+// })
 
-// DOM Code
-function addTodo() {
-  const input = document.getElementById('todo')
-  const name = input.value
-  input.value = ''
+// // DOM Code
+// function addTodo() {
+//   const input = document.getElementById('todo')
+//   const name = input.value
+//   input.value = ''
 
-  store.dispatch(addTodoAction({
-    id: generateId(),
-    name,
-    complete: false
-  }))
-}
+//   store.dispatch(addTodoAction({
+//     id: generateId(),
+//     name,
+//     complete: false
+//   }))
+// }
 
-function addGoal() {
-  const input = document.getElementById('goal')
-  const name = input.value
-  input.value = ''
+// function addGoal() {
+//   const input = document.getElementById('goal')
+//   const name = input.value
+//   input.value = ''
   
-  store.dispatch(addGoalAction({
-    id: generateId(),
-    name
-  }))
-}
+//   store.dispatch(addGoalAction({
+//     id: generateId(),
+//     name
+//   }))
+// }
 
-document.getElementById('todoBtn')
-  .addEventListener('click', addTodo)
+// document.getElementById('todoBtn')
+//   .addEventListener('click', addTodo)
 
-document.getElementById('goalBtn')
-  .addEventListener('click', addGoal)
+// document.getElementById('goalBtn')
+//   .addEventListener('click', addGoal)
 
-function createRemoveButton (onClick) {
-  const removeBtn = document.createElement('button')
-  removeBtn.innerHTML = 'X'
-  removeBtn.addEventListener('click', onClick)
-  return removeBtn
-}
+// function createRemoveButton (onClick) {
+//   const removeBtn = document.createElement('button')
+//   removeBtn.innerHTML = 'X'
+//   removeBtn.addEventListener('click', onClick)
+//   return removeBtn
+// }
 
-function addTodoToDOM(todo) {
-  const node = document.createElement('li')
+// function addTodoToDOM(todo) {
+//   const node = document.createElement('li')
 
-  const check = document.createElement('input')
-  check.setAttribute('type', 'checkbox')
-  check.setAttribute('id', todo.id)
+//   const check = document.createElement('input')
+//   check.setAttribute('type', 'checkbox')
+//   check.setAttribute('id', todo.id)
 
-  const text = document.createTextNode(todo.name)
+//   const text = document.createTextNode(todo.name)
 
-  const removeBtn = createRemoveButton(() => {
-    store.dispatch(removeTodoAction(todo.id))
-  })
+//   const removeBtn = createRemoveButton(() => {
+//     store.dispatch(removeTodoAction(todo.id))
+//   })
 
-  node.appendChild(check)
-  node.appendChild(text)
-  node.appendChild(removeBtn)
+//   node.appendChild(check)
+//   node.appendChild(text)
+//   node.appendChild(removeBtn)
 
-  node.style.textDecoration = todo.complete ? 'line-through' : 'none'
-  check.addEventListener('click', () => {
-    store.dispatch(toggleTodoAction(todo.id))
-    check.checked = !check.checked
-  })
+//   node.style.textDecoration = todo.complete ? 'line-through' : 'none'
+//   check.addEventListener('click', () => {
+//     store.dispatch(toggleTodoAction(todo.id))
+//     check.checked = !check.checked
+//   })
 
-  document.getElementById('todos')
-    .appendChild(node)
-}
+//   document.getElementById('todos')
+//     .appendChild(node)
+// }
 
-function addGoalToDOM(goal) {
-  const node = document.createElement('li')
-  const text = document.createTextNode(goal.name)
+// function addGoalToDOM(goal) {
+//   const node = document.createElement('li')
+//   const text = document.createTextNode(goal.name)
 
-  const removeBtn = createRemoveButton(() => {
-    store.dispatch(removeGoalAction(goal.id))
-  })
+//   const removeBtn = createRemoveButton(() => {
+//     store.dispatch(removeGoalAction(goal.id))
+//   })
 
-  node.appendChild(text)
-  node.appendChild(removeBtn)
+//   node.appendChild(text)
+//   node.appendChild(removeBtn)
 
-  document.getElementById('goals')
-    .appendChild(node)
-}
+//   document.getElementById('goals')
+//     .appendChild(node)
+// }
