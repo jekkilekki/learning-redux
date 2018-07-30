@@ -3,14 +3,17 @@
 # dependencies
 /node_modules
 /udacity-goals-todos/node_modules
+/reactnd-chirper-app/node_modules
 
 # testing
 /coverage
 /udacity-goals-todos/coverage
+/reactnd-chirper-app/coverage
 
 # production
 /build
 /udacity-goals-todos/build
+/reactnd-chirper-app/build
 
 # misc
 .DS_Store
